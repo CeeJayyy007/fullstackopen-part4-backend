@@ -4,6 +4,7 @@ const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
 
+// add blog schema
 const blogSchema = new mongoose.Schema({
   title: String,
   author: String,
@@ -11,6 +12,7 @@ const blogSchema = new mongoose.Schema({
   likes: Number,
 });
 
+// add blog schema to mongoose
 const Blog = mongoose.model("Blog", blogSchema);
 
 blogSchema.set("toJSON", {
@@ -21,7 +23,7 @@ blogSchema.set("toJSON", {
   },
 });
 
-// logger
+// add logger
 const info = (...params) => {
   console.log(...params);
 };
