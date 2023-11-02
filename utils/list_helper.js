@@ -5,7 +5,6 @@ const dummy = (blogs) => {
 };
 
 // define function totalLikes
-// eslint-disable-next-line no-unused-vars
 const totalLikes = (blogs) => {
   // receive an array of blogs as a parameter
   // return the total sum of likes in all of the blog posts
@@ -18,7 +17,26 @@ const totalLikes = (blogs) => {
   return blogs.reduce(sumOfLikes, 0);
 };
 
+// define function favoriteBlog
+const favoriteBlog = (blogs) => {
+  // receive an array of blogs as a parameter
+  // return the blog with the most likes
+  const mostLikedBlog = blogs.reduce((max, blog) => {
+    return blog.likes > max.likes ? blog : max;
+  }, blogs[0]);
+
+  const blogData = {
+    title: mostLikedBlog.title,
+    author: mostLikedBlog.author,
+    likes: mostLikedBlog.likes,
+  };
+
+  return blogData;
+};
+
+// export the functions
 module.exports = {
   dummy,
   totalLikes,
+  favoriteBlog,
 };
