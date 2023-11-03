@@ -13,7 +13,12 @@ blogsRouter.get("/", async (request, response) => {
 
 // add blog
 blogsRouter.post("/", async (request, response) => {
-  const blog = new Blog(request.body);
+  const body = request.body;
+
+  const blog = new Blog({
+    ...body,
+    likes: body.likes || 0, // if likes property is missing, set it to 0
+  });
 
   const savedBlog = await blog.save();
 

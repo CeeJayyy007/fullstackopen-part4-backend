@@ -54,3 +54,15 @@ test("a valid blog post can be added", async () => {
 
   expect(title).toContain("New blog post for testing");
 }, 10000);
+
+test("likes = 0 if likes property is missing", async () => {
+  const newBlog = {
+    title: "New blog post for testing",
+    author: "Kelvin Philips",
+    url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
+  };
+
+  const response = await api.post("/api/blogs").send(newBlog);
+
+  expect(response.body.likes).toBe(0);
+});
