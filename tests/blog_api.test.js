@@ -95,6 +95,29 @@ test("succeeds with status code 204 if id is valid", async () => {
   expect(title).not.toContain(blogToDelete.title);
 });
 
+test("update likes of a note", async () => {
+  const newBlog = {
+    title: "Go To Statement Considered Harmful",
+    author: "Edsger W. Dijkstra",
+    url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
+    likes: 6,
+  };
+
+  const blogsAtStart = await helper.blogsInDb();
+  const blogToUpdate = blogsAtStart[0];
+
+  await api
+    .put(`/api/blogs/${blogToUpdate.id}`)
+    .send(newBlog)
+    .expect(200)
+    .expect("Content-Type", /application\/json/);
+
+  const blogsAtEnd = await helper.blogsInDb();
+  const updatedBlog = blogsAtEnd[0];
+
+  expect(updatedBlog.likes).toBe(6);
+});
+
 afterAll(async () => {
   await mongoose.connection.close();
 });
