@@ -62,7 +62,20 @@ test("likes = 0 if likes property is missing", async () => {
     url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
   };
 
-  const response = await api.post("/api/blogs").send(newBlog);
+  const response = await api
+    .post("/api/blogs")
+    .send(newBlog)
+    .expect(201)
+    .expect("Content-Type", /application\/json/);
 
   expect(response.body.likes).toBe(0);
+});
+
+test("respond with 400 Bad request if title or url missing", async () => {
+  const newBlog = {
+    author: "Kelvin Philips",
+    likes: 3,
+  };
+
+  await api.post("/api/blogs").send(newBlog).expect(400);
 });

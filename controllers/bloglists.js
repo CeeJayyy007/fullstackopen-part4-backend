@@ -20,6 +20,12 @@ blogsRouter.post("/", async (request, response) => {
     likes: body.likes || 0, // if likes property is missing, set it to 0
   });
 
+  // if url or title is missing, return 400 Bad Request
+  if (!blog.url || !blog.title) {
+    return response.status(400).end();
+  }
+
+  // save blog to database
   const savedBlog = await blog.save();
 
   response.status(201).json(savedBlog);
