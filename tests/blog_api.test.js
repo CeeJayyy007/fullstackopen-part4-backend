@@ -11,10 +11,6 @@ beforeEach(async () => {
   await Blog.insertMany(helper.initialBlogs);
 });
 
-afterAll(async () => {
-  await mongoose.connection.close();
-});
-
 test("blogs are returned as json", async () => {
   await api
     .get("/api/blogs")
@@ -78,4 +74,27 @@ test("respond with 400 Bad request if title or url missing", async () => {
   };
 
   await api.post("/api/blogs").send(newBlog).expect(400);
+
+  const blogsAtEnd = await helper.blogsInDb();
+
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
+});
+
+test("succeeds with status code 204 if id is valid", async () => {
+  const blogsAtStart = await helper.blogsInDb();
+  const blogToDelete = blogsAtStart[0];
+
+  await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+
+  const blogsAtEnd = await helper.blogsInDb();
+
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1);
+
+  const title = blogsAtEnd.map((b) => b.title);
+
+  expect(title).not.toContain(blogToDelete.title);
+});
+
+afterAll(async () => {
+  await mongoose.connection.close();
 });
