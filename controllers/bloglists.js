@@ -1,12 +1,6 @@
-// add jwt for token creation
-// const jwt = require("jsonwebtoken");
-
-// create blogs list router
+const middleware = require("../utils/middleware");
 const blogsRouter = require("express").Router();
-
-// add blogs list model
 const Blog = require("../models/bloglist");
-// const User = require("../models/user");
 
 // get all blogs
 blogsRouter.get("/", async (request, response) => {
@@ -16,18 +10,8 @@ blogsRouter.get("/", async (request, response) => {
 });
 
 // add blog
-blogsRouter.post("/", async (request, response) => {
+blogsRouter.post("/", middleware.userExtractor, async (request, response) => {
   const body = request.body;
-
-  // // decode token
-  // const decodedToken = jwt.verify(request.token, process.env.SECRET);
-
-  // if (!decodedToken.id) {
-  //   return response.status(401).json({ error: "token invalid" });
-  // }
-
-  // // get user from token
-  // const user = await User.findById(decodedToken.id);
 
   const user = request.user;
 
@@ -67,30 +51,24 @@ blogsRouter.put("/:id", async (request, response) => {
 });
 
 // delete blog post
-blogsRouter.delete("/:id", async (request, response) => {
-  // // decode token
-  // const decodedToken = jwt.verify(request.token, process.env.SECRET);
+blogsRouter.delete(
+  "/:id",
+  middleware.userExtractor,
+  async (request, response) => {
+    const user = request.user;
 
-  // if (!decodedToken.id) {
-  //   return response.status(401).json({ error: "invalid token" });
-  // }
+    // get blog post to delete
+    const blog = await Blog.findById(request.params.id);
 
-  // // get user from token
-  // const user = await User.findById(decodedToken.id);
+    if (user.id !== blog.user.toString()) {
+      return response.status(401).json({ error: "unauthorized user request" });
+    }
 
-  const user = request.user;
+    // delete blog post
+    await Blog.findByIdAndRemove(request.params.id);
 
-  // get blog post to delete
-  const blog = await Blog.findById(request.params.id);
-
-  if (user.id !== blog.user.toString()) {
-    return response.status(401).json({ error: "unauthorized user request" });
+    response.status(204).end();
   }
-
-  // delete blog post
-  await Blog.findByIdAndRemove(request.params.id);
-
-  response.status(204).end();
-});
+);
 
 module.exports = blogsRouter;
