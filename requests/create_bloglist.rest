@@ -1,9 +1,9 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkphbWVzIiwiaWQiOiI2NTQ2MGQyNTNjODA5OWI3ZDhhNmZhZjgiLCJpYXQiOjE2OTkwOTE0MTcsImV4cCI6MTY5OTA5NTAxN30.8tVww7eVPzbsZbC1z5kvZE2R35smp2hYYCDtTJQnd9g
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkphbWVzIiwiaWQiOiI2NTQ2MGQyNTNjODA5OWI3ZDhhNmZhZjgiLCJpYXQiOjE2OTkxMDMwMDMsImV4cCI6MTY5OTEwNjYwM30.35zZDMF1QonzP7d_pv-v3ef_lGgTU3ecEOGhg6z0hQI
 
 { 
-    "title": "Node js", 
+    "title": "Node js to be deleted", 
     "author": "Einstein",
     "url": "http://localhost:3003/api/blogs/1",
     "likes": 1 
