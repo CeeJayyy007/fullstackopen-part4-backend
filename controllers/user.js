@@ -11,6 +11,7 @@ const User = require("../models/user");
 usersRouter.post("/", async (request, response) => {
   const { username, name, password } = request.body;
 
+  // hash password
   const saltRounds = 10;
   const passwordHash = await bcrypt.hash(password, saltRounds);
 
@@ -27,6 +28,7 @@ usersRouter.post("/", async (request, response) => {
 
 // get users
 usersRouter.get("/", async (request, response) => {
+  // populate the blogs field of the user object with the details of the blogs
   const users = await User.find({}).populate("blogs", {
     title: 1,
     author: 1,
