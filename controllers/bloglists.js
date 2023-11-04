@@ -1,3 +1,6 @@
+// add jwt for token creation
+const jwt = require("jsonwebtoken");
+
 // create blogs list router
 const blogsRouter = require("express").Router();
 
@@ -12,17 +15,33 @@ blogsRouter.get("/", async (request, response) => {
   response.json(blogs);
 });
 
+// get token from request
+const getTokenFrom = (request) => {
+  const authorization = request.get("authorization");
+  if (authorization && authorization.startsWith("Bearer ")) {
+    return authorization.replace("Bearer ", "");
+  }
+  return null;
+};
+
 // add blog
 blogsRouter.post("/", async (request, response) => {
   const body = request.body;
 
-  // get user from database
-  const user = await User.findById(body.userId);
+  // decode token
+  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET);
+
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: "token invalid" });
+  }
+
+  // get user from token
+  const user = await User.findById(decodedToken.id);
 
   const blog = new Blog({
     ...body,
     likes: body.likes || 0, // if likes property is missing, set it to 0
-    user: user._id,
+    user: user.id,
   });
 
   // if url or title is missing, return 400 Bad Request
