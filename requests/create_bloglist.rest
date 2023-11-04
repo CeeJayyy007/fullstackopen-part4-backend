@@ -1,5 +1,6 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkphbWVzIiwiaWQiOiI2NTQ2MGQyNTNjODA5OWI3ZDhhNmZhZjgiLCJpYXQiOjE2OTkwOTE0MTcsImV4cCI6MTY5OTA5NTAxN30.8tVww7eVPzbsZbC1z5kvZE2R35smp2hYYCDtTJQnd9g
 
 { 
     "title": "Node js", 
