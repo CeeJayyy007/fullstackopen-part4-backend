@@ -3,10 +3,11 @@ const blogsRouter = require("express").Router();
 
 // add blogs list model
 const Blog = require("../models/bloglist");
+const User = require("../models/user");
 
 // get all blogs
 blogsRouter.get("/", async (request, response) => {
-  const blogs = await Blog.find({});
+  const blogs = await Blog.find({}).populate("user", { username: 1, name: 1 });
 
   response.json(blogs);
 });
@@ -15,9 +16,13 @@ blogsRouter.get("/", async (request, response) => {
 blogsRouter.post("/", async (request, response) => {
   const body = request.body;
 
+  // get user from database
+  const user = await User.findById(body.userId);
+
   const blog = new Blog({
     ...body,
     likes: body.likes || 0, // if likes property is missing, set it to 0
+    user: user._id,
   });
 
   // if url or title is missing, return 400 Bad Request
@@ -27,6 +32,11 @@ blogsRouter.post("/", async (request, response) => {
 
   // save blog to database
   const savedBlog = await blog.save();
+
+  // add saved blog to user's blogs array
+  user.blogs = user.blogs.concat(savedBlog._id);
+
+  await user.save();
 
   response.status(201).json(savedBlog);
 });
