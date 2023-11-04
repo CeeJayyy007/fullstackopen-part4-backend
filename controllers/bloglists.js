@@ -1,12 +1,12 @@
 // add jwt for token creation
-const jwt = require("jsonwebtoken");
+// const jwt = require("jsonwebtoken");
 
 // create blogs list router
 const blogsRouter = require("express").Router();
 
 // add blogs list model
 const Blog = require("../models/bloglist");
-const User = require("../models/user");
+// const User = require("../models/user");
 
 // get all blogs
 blogsRouter.get("/", async (request, response) => {
@@ -19,15 +19,17 @@ blogsRouter.get("/", async (request, response) => {
 blogsRouter.post("/", async (request, response) => {
   const body = request.body;
 
-  // decode token
-  const decodedToken = jwt.verify(request.token, process.env.SECRET);
+  // // decode token
+  // const decodedToken = jwt.verify(request.token, process.env.SECRET);
 
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: "token invalid" });
-  }
+  // if (!decodedToken.id) {
+  //   return response.status(401).json({ error: "token invalid" });
+  // }
 
-  // get user from token
-  const user = await User.findById(decodedToken.id);
+  // // get user from token
+  // const user = await User.findById(decodedToken.id);
+
+  const user = request.user;
 
   const blog = new Blog({
     ...body,
@@ -66,15 +68,17 @@ blogsRouter.put("/:id", async (request, response) => {
 
 // delete blog post
 blogsRouter.delete("/:id", async (request, response) => {
-  // decode token
-  const decodedToken = jwt.verify(request.token, process.env.SECRET);
+  // // decode token
+  // const decodedToken = jwt.verify(request.token, process.env.SECRET);
 
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: "invalid token" });
-  }
+  // if (!decodedToken.id) {
+  //   return response.status(401).json({ error: "invalid token" });
+  // }
 
-  // get user from token
-  const user = await User.findById(decodedToken.id);
+  // // get user from token
+  // const user = await User.findById(decodedToken.id);
+
+  const user = request.user;
 
   // get blog post to delete
   const blog = await Blog.findById(request.params.id);
