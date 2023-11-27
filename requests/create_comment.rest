@@ -1,11 +1,7 @@
-POST http://localhost:3003/api/blogs
+PUT http://localhost:3003/api/blogs/65641c1b8644179e90fd0e67/comments
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkphbWVzIiwiaWQiOiI2NTQ2NTA4YWRlM2E3ODY4ZjQ2ZGNjN2UiLCJpYXQiOjE3MDEwNTk0NTQsImV4cCI6MTcwMTA2MzA1NH0.fp6eIaEP207T3mwqi1PEq0KlXT1TGWeXV5U9JfBZXYY
 
-{ 
-    "title": "Latest blog", 
-    "author": "James",
-    "url": "http://localhost:3003/api/blogs/3",
-    "likes": 2,
-    "comments": "This is a comment"
+{
+  "comment": "This is the newest bestest test comment"
 }
